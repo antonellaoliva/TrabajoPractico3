@@ -1,22 +1,19 @@
 package com.example.trabajopractico3;
 
 import android.os.Bundle;
-import android.view.MenuItem;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-
+import androidx.fragment.app.Fragment;
 import com.example.trabajopractico3.databinding.ActivityMainBinding;
 import com.example.trabajopractico3.model.Producto;
 import com.example.trabajopractico3.ui.gallery.GalleryFragment;
 import com.example.trabajopractico3.ui.home.HomeFragment;
 import com.google.android.material.navigation.NavigationView;
-
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,12 +34,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer = binding.drawerLayout;
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this,
-                drawer,
-                toolbar,
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close
-        );
+                this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -57,25 +50,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull android.view.MenuItem item) {
+        Fragment selected = null;
         int id = item.getItemId();
+        if (id == R.id.nav_gallery) selected = new GalleryFragment();
+        else if (id == R.id.nav_home) selected = new HomeFragment();
+        else if (id == R.id.nav_eliminar) selected = new com.example.trabajopractico3.ui.eliminar.EliminarFragment();
+        else if (id == R.id.nav_slideshow) {
 
-        if (id == R.id.nav_gallery) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Salir")
+                    .setMessage("¿Desea cerrar la aplicación?")
+                    .setPositiveButton("Sí", (d,w) -> finish())
+                    .setNegativeButton("No", null)
+                    .show();
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
+        }
+
+        if (selected != null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new GalleryFragment())
+                    .replace(R.id.fragment_container, selected)
+                    .addToBackStack(null)
                     .commit();
-        } else if (id == R.id.nav_home) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new HomeFragment())
-                    .commit();
-        } else if (id == R.id.nav_slideshow) {
-            finish();
         }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     @Override
     public void onBackPressed() {
@@ -83,3 +85,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else super.onBackPressed();
     }
 }
+

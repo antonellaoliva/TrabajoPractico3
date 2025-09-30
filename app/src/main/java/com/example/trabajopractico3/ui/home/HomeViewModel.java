@@ -1,25 +1,19 @@
 package com.example.trabajopractico3.ui.home;
 
-import android.app.Application;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
+import com.example.trabajopractico3.MainActivity;
 import com.example.trabajopractico3.model.Producto;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class HomeViewModel extends AndroidViewModel {
+public class HomeViewModel extends ViewModel {
 
     private MutableLiveData<ArrayList<Producto>> lista;
-
-    public HomeViewModel(@NonNull Application application) {
-        super(application);
-    }
 
     public LiveData<ArrayList<Producto>> getLista() {
         if (lista == null) lista = new MutableLiveData<>();
@@ -27,12 +21,8 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public void cargarProductos() {
-        if (lista == null) lista = new MutableLiveData<>();
-
-
-        ArrayList<Producto> copia = new ArrayList<>(com.example.trabajopractico3.MainActivity.stock);
+        ArrayList<Producto> copia = new ArrayList<>(MainActivity.stock);
         Collections.sort(copia, Comparator.comparing(Producto::getDescripcion));
-
         lista.setValue(copia);
     }
 }

@@ -22,4 +22,21 @@
         android:name="com.example.trabajopractico3.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/eliminarFragment"
+        android:name="com.example.trabajopractico3.ui.eliminar.EliminarFragment"
+        android:label="Eliminar Producto"
+        tools:layout="@layout/fragment_eliminar" >
+        <action
+            android:id="@+id/action_eliminarFragment_to_detalleFragment"
+            app:destination="@id/detalleFragment" />
+
+    <fragment
+        android:id="@+id/detalleFragment"
+        android:name="com.example.trabajopractico3.ui.detalle.DetalleFragment"
+        android:label="Detalle Producto"
+        tools:layout="@layout/fragment_detalle" />
+    </fragment>
+
 </navigation>

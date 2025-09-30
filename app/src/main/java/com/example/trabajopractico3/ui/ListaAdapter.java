@@ -5,13 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.trabajopractico3.R;
 import com.example.trabajopractico3.model.Producto;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,20 +18,21 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ViewHolder> 
 
     private ArrayList<Producto> lista;
     private LayoutInflater inflater;
-    private DecimalFormat formatoPrecio = new DecimalFormat("#,##0.00");
+    private DecimalFormat df = new DecimalFormat("#,##0.00");
 
     public ListaAdapter(ArrayList<Producto> lista, LayoutInflater inflater, Context context) {
 
-        Collections.sort(lista, Comparator.comparing(Producto::getDescripcion, String.CASE_INSENSITIVE_ORDER));
-        this.lista = lista;
+        ArrayList<Producto> copy = new ArrayList<>(lista);
+        Collections.sort(copy, Comparator.comparing(Producto::getDescripcion, String.CASE_INSENSITIVE_ORDER));
+        this.lista = copy;
         this.inflater = inflater;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View root = inflater.inflate(R.layout.item, parent, false);
-        return new ViewHolder(root);
+        View v = inflater.inflate(R.layout.item, parent, false);
+        return new ViewHolder(v);
     }
 
     @Override
@@ -47,7 +45,7 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ViewHolder> 
             Producto p = lista.get(position);
             holder.tvCodigo.setText(p.getCodigo());
             holder.tvDescripcion.setText(p.getDescripcion());
-            holder.tvPrecio.setText("$ " + formatoPrecio.format(p.getPrecio()));
+            holder.tvPrecio.setText("$ " + df.format(p.getPrecio()));
         }
     }
 
@@ -56,10 +54,9 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ViewHolder> 
         return lista.isEmpty() ? 1 : lista.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvCodigo, tvDescripcion, tvPrecio;
-
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCodigo = itemView.findViewById(R.id.tvCodigo);
             tvDescripcion = itemView.findViewById(R.id.tvDescripcion);
@@ -67,5 +64,4 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ViewHolder> 
         }
     }
 }
-
 
