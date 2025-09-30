@@ -26,7 +26,7 @@ public class GalleryFragment extends Fragment {
         binding = FragmentGalleryBinding.inflate(inflater, container, false);
         mv = new ViewModelProvider(this).get(GalleryViewModel.class);
 
-        // RecyclerView
+
         mv.getMLista().observe(getViewLifecycleOwner(), productos -> {
             ListaAdapter la = new ListaAdapter(productos, getLayoutInflater(), getContext());
             binding.rvLista.setLayoutManager(new GridLayoutManager(getContext(), 1));
